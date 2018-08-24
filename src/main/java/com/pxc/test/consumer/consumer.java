@@ -1,13 +1,10 @@
-package consumer;
+package com.pxc.test.consumer;
 
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
-import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.message.MessageExt;
-
-import java.util.List;
 
 /**
  * @author pengxincheng@ipaynow.cn
@@ -38,6 +35,7 @@ public class consumer {
          * 注意：一个consumer对象可以订阅多个topic
          */
         consumer.subscribe("TopicTest2", "*");
+        consumer.subscribe("TopicTest3", "*");
 
         //默认msgs里只有一条消息，可以通过设置consumeMessageBatchMaxSize参数来批量接收消息
         consumer.registerMessageListener((MessageListenerConcurrently) (msgs, context) -> {
@@ -55,6 +53,8 @@ public class consumer {
                 }
             } else if (msg.getTopic().equals("TopicTest2")) {
                 System.out.println(new String(msg.getBody()));
+            }else{
+                System.out.println("TopicTest3" + new String(msg.getBody()));
             }
 
             return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
