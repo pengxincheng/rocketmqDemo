@@ -24,6 +24,7 @@ public class Produce {
             producer.setNamesrvAddr("192.168.11.184:9876");
             producer.setInstanceName("Producer");
             producer.setVipChannelEnabled(false);
+            producer.setRetryTimesWhenSendFailed(3);   //设置发送失败后重试次数
 
             /**
              * Producer对象在使用之前必须要调用start初始化，初始化一次即可<br>
@@ -37,20 +38,20 @@ public class Produce {
              * 例如消息写入Master成功，但是Slave不成功，这种情况消息属于成功，但是对于个别应用如果对消息可靠性要求极高，<br>
              * 需要对这种情况做处理。另外，消息可能会存在发送失败的情况，失败重试由应用来处理。
              */
-            for (int i = 0; i < 1; i++) {
+            for (int i = 0; i < 10; i++) {
                 try {
 
                     Message msg1 = new Message("TopicTest1", "TagA", "OrderID001", ("Hello MetaQ").getBytes());
-                    SendResult sendResult1 = producer.send(msg1);
+                    SendResult sendResult1 = producer.send(msg1,1000);//如果该条消息在1S内没有发送成功，那么重试
                     System.out.println(sendResult1);
 
-                    Message msg2 = new Message("TopicTest2", "TagB", "OrderID0034", ("Hello MetaQ").getBytes());
+                    /*Message msg2 = new Message("TopicTest2", "TagB", "OrderID0034", ("Hello MetaQ").getBytes());
                     SendResult sendResult2 = producer.send(msg2);
                     System.out.println(sendResult2);
 
                     Message msg3 = new Message("TopicTest3", "TagC", "OrderID061", ("Hello MetaQ").getBytes());
                     SendResult sendResult3 = producer.send(msg3);
-                    System.out.println(sendResult3);
+                    System.out.println(sendResult3);*/
 
 
                 } catch (Exception e) {
