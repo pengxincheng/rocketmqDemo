@@ -10,6 +10,8 @@ import org.apache.rocketmq.common.message.MessageExt;
  * @author pengxincheng@ipaynow.cn
  * @Date: 2018/8/24
  * @Time 15:30
+ *
+ * 两个consumer部署到不同的ip上才可以实现负载均衡消费，一开始在同一机器上启动两个consumer出现了重复消费现象
  */
 public class consumer {
     /**
@@ -35,8 +37,8 @@ public class consumer {
              * 订阅指定topic下所有消息<br>
              * 注意：一个consumer对象可以订阅多个topic
              */
-            consumer.subscribe("TopicTest2", "*");
-            consumer.subscribe("TopicTest3", "*");
+          /*  consumer.subscribe("TopicTest2", "*");
+            consumer.subscribe("TopicTest3", "*");*/
 
             //默认msgs里只有一条消息，可以通过设置consumeMessageBatchMaxSize参数来批量接收消息
             consumer.registerMessageListener((MessageListenerConcurrently) (msgs, context) -> {

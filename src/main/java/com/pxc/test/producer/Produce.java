@@ -23,8 +23,8 @@ public class Produce {
             DefaultMQProducer producer = new DefaultMQProducer("ProducerGroupName");
             producer.setNamesrvAddr("192.168.11.184:9876");
             producer.setInstanceName("Producer");
-            producer.setVipChannelEnabled(false);
-            producer.setRetryTimesWhenSendFailed(3);   //设置发送失败后重试次数
+       //     producer.setVipChannelEnabled(false);
+         //   producer.setRetryTimesWhenSendFailed(3);   //设置发送失败后重试次数
 
             /**
              * Producer对象在使用之前必须要调用start初始化，初始化一次即可<br>
@@ -41,8 +41,8 @@ public class Produce {
             for (int i = 0; i < 10; i++) {
                 try {
 
-                    Message msg1 = new Message("TopicTest1", "TagA", "OrderID001", ("Hello MetaQ").getBytes());
-                    SendResult sendResult1 = producer.send(msg1,1000);//如果该条消息在1S内没有发送成功，那么重试
+                    Message msg1 = new Message("TopicTest1", "TagA", "OrderID001", ("Hello MetaQ" + i).getBytes());
+                    SendResult sendResult1 = producer.send(msg1);//如果该条消息在1S内没有发送成功，那么重试
                     System.out.println(sendResult1);
 
                     /*Message msg2 = new Message("TopicTest2", "TagB", "OrderID0034", ("Hello MetaQ").getBytes());
